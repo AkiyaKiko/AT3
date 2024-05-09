@@ -51,11 +51,41 @@ public class MysteryMansionGame {
     }
 
     // Set difficulty level
-    public void setDifficultyLevel() {}
+    public void setDifficultyLevel() {
+        System.out.println("Select difficulty level:");
+        System.out.println("1. Easy");
+        System.out.println("2. Medium");
+        System.out.println("3. Hard");
+        difficultyLevel = sc.nextInt();
 
-    public void play() {}
+        switch (difficultyLevel) {
+            case 1:
+                numArrows = MAX_ARROWS + 1; // Provide more arrows for easy mode
+                break;
+            case 2:
+                numArrows = MAX_ARROWS;
+                break;
+            case 3:
+                numArrows = MAX_ARROWS - 1; // Reduce arrows for hard mode
+                break;
+            default:
+                numArrows = MAX_ARROWS;
+        }
+    
+    }
 
-    public void playOne() {}
+    public void play() {
+        setDifficultyLevel();
+        explain();
+
+        while (!gameOver) {
+            playOne();
+        }
+    }
+
+    public void playOne() {
+
+    }
 
     public void explain() {
         trace("explain the game");
