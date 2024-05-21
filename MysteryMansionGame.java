@@ -46,7 +46,6 @@ public class MysteryMansionGame {
         bot = new MysteryMansionBot();
         sc = new Scanner(System.in);
 
-        
         play();
     }
 
@@ -60,16 +59,16 @@ public class MysteryMansionGame {
 
         switch (difficultyLevel) {
             case 1:
-                numArrows = MAX_ARROWS + 1; // Provide more arrows for easy mode
+                numArrows = MAXARROWS + 1; // Provide more arrows for easy mode
                 break;
             case 2:
-                numArrows = MAX_ARROWS;
+                numArrows = MAXARROWS;
                 break;
             case 3:
-                numArrows = MAX_ARROWS - 1; // Reduce arrows for hard mode
+                numArrows = MAXARROWS - 1; // Reduce arrows for hard mode
                 break;
             default:
-                numArrows = MAX_ARROWS;
+                numArrows = MAXARROWS;
         }
     
     }
@@ -77,15 +76,28 @@ public class MysteryMansionGame {
     public void play() {
         setDifficultyLevel();
         explain();
-
-        while (!gameOver) {
-            playOne();
+        System.out.println("Would you like to play Mystery Mansion Game? (1 = yes, 0 = no)");
+        int play = sc.nextInt();
+        while(play == 1){
+            gamesPlayed[TOTAL]++;
+            bot.newGame();
+            while (!gameOver) {
+                playOne();
+            }
+            System.out.println("Would you like to play Mystery Mansion Game? (1 = yes, 0 = no)");
+            play = sc.nextInt();
         }
+        System.out.println(gamesDesc[TOTAL] + gamesPlayed[TOTAL] + " games.");
+        System.out.println(gamesDesc[WON] + gamesPlayed[WON] + " games.");
+        System.out.println(gamesDesc[EATEN] + gamesPlayed[EATEN] + " games.");
+        System.out.println(gamesDesc[FELL] + gamesPlayed[FELL] + " games.");
+        System.out.println(gamesDesc[QUIT] + gamesPlayed[QUIT] + " games.");
     }
 
     public void playOne() {
         // Print current location and available information
         System.out.println("Current Room: " + bot.getCurrent());
+        System.out.println(bot.nextRoom('l') + ',' + bot.nextRoom('r') + ',' + bot.nextRoom('a'));
         System.out.println("Connecting Rooms: " + bot.pitNear());
         System.out.println("Arrows: " + numArrows);
     
@@ -94,10 +106,10 @@ public class MysteryMansionGame {
 
     
         if (ghost) {
-            System.out.println("You smell a horrible smell. The ghost might be nearby.");
+            System.out.println("You can smell something horrible.");
         }
 
-    
+
         // Ask for user's move
         System.out.println("What is your move?");
         System.out.println("1. Walk into another room");
@@ -107,43 +119,56 @@ public class MysteryMansionGame {
     
         switch (move) {
             case 1:
+                System.out.println("Which room would you like to walk into?");
                 // Implement walking into another room
                 int roomToWalk = sc.nextInt();
                 int walkResult = bot.tryWalk(roomToWalk);
-                if (walkResult == 1) {
+                if (walkResult == 0) {
+                    gameOver = false;
+                    response = 1;
+                } else if (walkResult == 1) {
+                    gamesPlayed[EATEN]++;
                     gameOver = true;
-                    response = EATEN;
+                    response = 2;
                 } else if (walkResult == 2) {
+                    gamesPlayed[FELL]++;
                     gameOver = true;
-                    response = FELL;
+                    response = 3;
+                } else {
+                    gameOver = false;
+                    response = 0;
                 }
                 break;
             case 2:
+                System.out.println("Which room would you like to shoot into?");
                 // Implement shooting into another room
                 if (numArrows > 0) {
+                    numArrows--;
                     int roomToShoot = sc.nextInt();
                     int shotResult = bot.tryShoot(roomToShoot);
-                    if (shotResult == 1) {
+                    if (shotResult == 0) {
+                        gamesPlayed[WON]++;
                         gameOver = true;
-                        response = WON;
-                    } else {
-                        numArrows--;
-                        System.out.println("Arrow missed. I guess the ghost wasn't in there...");
+                        response = 5;
+                    } else if (shotResult == 3) {
+                        response = 6;
+                    }
+                    else {
+                        response = 4;
                     }
                 } else {
-                    System.out.println("You can't shoot -- you have no arrows left!");
+                    response = 7;
                 }
                 break;
             case 3:
                 // Quit the game
+                gamesPlayed[QUIT]++;
                 gameOver = true;
-                response = QUIT;
+                response = -1;
                 break;
             default:
                 System.out.println("Invalid move. Please try again.");
         }
-        gamesPlayed[TOTAL]++;
-        gamesPlayed[response]++;
         System.out.println(RESPONSES[response]);
     }
 
