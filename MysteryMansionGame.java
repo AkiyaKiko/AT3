@@ -73,7 +73,9 @@ public class MysteryMansionGame {
     
     }
 
+    //
     public void play() {
+        bot.setTracing(true);
         setDifficultyLevel();
         explain();
         System.out.println("Would you like to play Mystery Mansion Game? (1 = yes, 0 = no)");
@@ -94,6 +96,7 @@ public class MysteryMansionGame {
         System.out.println(gamesDesc[QUIT] + gamesPlayed[QUIT] + " games.");
     }
 
+    //
     public void playOne() {
         // Print current location and available information
         System.out.println("Current Room: " + bot.getCurrent());
@@ -164,7 +167,6 @@ public class MysteryMansionGame {
                 // Quit the game
                 gamesPlayed[QUIT]++;
                 gameOver = true;
-                response = -1;
                 break;
             default:
                 System.out.println("Invalid move. Please try again.");
