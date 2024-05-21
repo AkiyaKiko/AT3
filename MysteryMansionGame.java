@@ -84,7 +84,67 @@ public class MysteryMansionGame {
     }
 
     public void playOne() {
+        // Print current location and available information
+        System.out.println("Current Room: " + bot.getCurrent());
+        System.out.println("Connecting Rooms: " + bot.pitNear());
+        System.out.println("Arrows: " + numArrows);
+    
+        // Check if there's a smell of the ghost or a breeze from the pit
+        boolean ghost = bot.ghostNear();
 
+    
+        if (ghost) {
+            System.out.println("You smell a horrible smell. The ghost might be nearby.");
+        }
+
+    
+        // Ask for user's move
+        System.out.println("What is your move?");
+        System.out.println("1. Walk into another room");
+        System.out.println("2. Shoot into another room");
+        System.out.println("3. Quit the game");
+        int move = sc.nextInt();
+    
+        switch (move) {
+            case 1:
+                // Implement walking into another room
+                int roomToWalk = sc.nextInt();
+                int walkResult = bot.tryWalk(roomToWalk);
+                if (walkResult == 1) {
+                    gameOver = true;
+                    response = EATEN;
+                } else if (walkResult == 2) {
+                    gameOver = true;
+                    response = FELL;
+                }
+                break;
+            case 2:
+                // Implement shooting into another room
+                if (numArrows > 0) {
+                    int roomToShoot = sc.nextInt();
+                    int shotResult = bot.tryShoot(roomToShoot);
+                    if (shotResult == 1) {
+                        gameOver = true;
+                        response = WON;
+                    } else {
+                        numArrows--;
+                        System.out.println("Arrow missed. I guess the ghost wasn't in there...");
+                    }
+                } else {
+                    System.out.println("You can't shoot -- you have no arrows left!");
+                }
+                break;
+            case 3:
+                // Quit the game
+                gameOver = true;
+                response = QUIT;
+                break;
+            default:
+                System.out.println("Invalid move. Please try again.");
+        }
+        gamesPlayed[TOTAL]++;
+        gamesPlayed[response]++;
+        System.out.println(RESPONSES[response]);
     }
 
     public void explain() {
