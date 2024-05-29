@@ -119,6 +119,7 @@ public class MysteryMansionGame {
         System.out.println("2. Shoot into another room");
         System.out.println("3. Quit the game");
         int move = sc.nextInt();
+        response = -1;
     
         switch (move) {
             case 1:
@@ -171,7 +172,8 @@ public class MysteryMansionGame {
             default:
                 System.out.println("Invalid move. Please try again.");
         }
-        System.out.println(RESPONSES[response]);
+        if(response >=0 && response <= 7)
+            System.out.println(RESPONSES[response]);
     }
 
     public void explain() {
