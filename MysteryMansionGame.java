@@ -68,6 +68,7 @@ public class MysteryMansionGame {
         System.out.print("Enter your choice: ");
         difficultyLevel = sc.nextInt();
 
+        // Set the number of arrows based on the difficulty level
         switch (difficultyLevel) {
             case 1:
                 numArrows = MAXARROWS + 1; // Provide more arrows for easy mode
