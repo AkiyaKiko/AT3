@@ -51,10 +51,11 @@ public class MysteryMansionGame {
 
     // Set difficulty level
     public void setDifficultyLevel() {
-        System.out.println("Select difficulty level:");
+        System.out.println("Choose difficulty level:");
         System.out.println("1. Easy");
         System.out.println("2. Medium");
         System.out.println("3. Hard");
+        System.out.print("Enter your choice: ");
         difficultyLevel = sc.nextInt();
 
         switch (difficultyLevel) {
@@ -75,19 +76,22 @@ public class MysteryMansionGame {
 
     //
     public void play() {
-        bot.setTracing(true);
+        bot.setTracing(false);
         setDifficultyLevel();
         explain();
-        System.out.println("Would you like to play Mystery Mansion Game? (1 = yes, 0 = no)");
-        int play = sc.nextInt();
-        while(play == 1){
+        System.out.println("Would you like to play Mystery Mansion Game? ");
+        String play = sc.next();
+        int arrows = numArrows;
+        while(play.equalsIgnoreCase("y")){
+            gameOver = false;
+            numArrows = arrows;
             gamesPlayed[TOTAL]++;
             bot.newGame();
             while (!gameOver) {
                 playOne();
             }
-            System.out.println("Would you like to play Mystery Mansion Game? (1 = yes, 0 = no)");
-            play = sc.nextInt();
+            System.out.println("Would you like to play Mystery Mansion Game? ");
+            play = sc.next();
         }
         System.out.println(gamesDesc[TOTAL] + gamesPlayed[TOTAL] + " games.");
         System.out.println(gamesDesc[WON] + gamesPlayed[WON] + " games.");
@@ -99,30 +103,29 @@ public class MysteryMansionGame {
     //
     public void playOne() {
         // Print current location and available information
-        System.out.println("Current Room: " + bot.getCurrent());
-        System.out.println(bot.nextRoom('l') + ',' + bot.nextRoom('r') + ',' + bot.nextRoom('a'));
-        System.out.println("Connecting Rooms: " + bot.pitNear());
-        System.out.println("Arrows: " + numArrows);
+        System.out.print("You are in Room #" + bot.getCurrent() + "\n");
+        System.out.println("To your left is #" + String.valueOf(bot.nextRoom('l')) + ", to your right is #" + String.valueOf(bot.nextRoom('r')) + ", and ahead is #" + String.valueOf(bot.nextRoom('a')));
+        System.out.println("You have " + numArrows + " arrows remaining.");
     
         // Check if there's a smell of the ghost or a breeze from the pit
         boolean ghost = bot.ghostNear();
-
+        boolean pit = bot.pitNear();
     
         if (ghost) {
             System.out.println("You can smell something horrible.");
         }
+        if (pit) {
+            System.out.println("You feel a cold wind.");
+        }
 
 
         // Ask for user's move
-        System.out.println("What is your move?");
-        System.out.println("1. Walk into another room");
-        System.out.println("2. Shoot into another room");
-        System.out.println("3. Quit the game");
-        int move = sc.nextInt();
+        System.out.println("Please choose from (W)alk, (S)hoot, or (Q)uit: ");
+        char move = sc.next().charAt(0);
         response = -1;
     
         switch (move) {
-            case 1:
+            case 'w':
                 System.out.println("Which room would you like to walk into?");
                 // Implement walking into another room
                 int roomToWalk = sc.nextInt();
@@ -143,7 +146,7 @@ public class MysteryMansionGame {
                     response = 0;
                 }
                 break;
-            case 2:
+            case 's':
                 System.out.println("Which room would you like to shoot into?");
                 // Implement shooting into another room
                 if (numArrows > 0) {
@@ -164,7 +167,7 @@ public class MysteryMansionGame {
                     response = 7;
                 }
                 break;
-            case 3:
+            case 'q':
                 // Quit the game
                 gamesPlayed[QUIT]++;
                 gameOver = true;
