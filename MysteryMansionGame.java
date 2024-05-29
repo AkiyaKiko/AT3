@@ -9,6 +9,7 @@
  */
  
  
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MysteryMansionGame {
@@ -51,11 +52,25 @@ public class MysteryMansionGame {
 
     // Set difficulty level
     public void setDifficultyLevel() {
-        System.out.println("Select difficulty level:");
+        System.out.println("Choose difficulty level:");
         System.out.println("1. Easy");
         System.out.println("2. Medium");
-        System.out.println("3. Hard");
-        difficultyLevel = sc.nextInt();
+        System.out.println("3. Hard\n");
+        System.out.print("Enter your choice: ");
+        
+        while (true) {
+            try {
+                difficultyLevel = sc.nextInt();
+                if (difficultyLevel >= 1 && difficultyLevel <= 3) {
+                    break;
+                } else {
+                    System.out.print("Invalid choice. Enter a number between 1 and 3: ");
+                }
+            } catch (InputMismatchException e) {
+                System.out.print("Invalid input. Please enter a number: ");
+                sc.next(); // Clear the invalid input
+            }
+        }
 
         switch (difficultyLevel) {
             case 1:
@@ -67,10 +82,7 @@ public class MysteryMansionGame {
             case 3:
                 numArrows = MAXARROWS - 1; // Reduce arrows for hard mode
                 break;
-            default:
-                numArrows = MAXARROWS;
         }
-    
     }
 
     //
@@ -78,16 +90,16 @@ public class MysteryMansionGame {
         bot.setTracing(true);
         setDifficultyLevel();
         explain();
-        System.out.println("Would you like to play Mystery Mansion Game? (1 = yes, 0 = no)");
-        int play = sc.nextInt();
-        while(play == 1){
+        System.out.print("Would you like to play Mystery Mansion Game? ");
+        String choice = sc.next();
+        while(choice.equalsIgnoreCase("y")){
             gamesPlayed[TOTAL]++;
             bot.newGame();
             while (!gameOver) {
                 playOne();
             }
-            System.out.println("Would you like to play Mystery Mansion Game? (1 = yes, 0 = no)");
-            play = sc.nextInt();
+            System.out.print("Would you like to play Mystery Mansion Game? ");
+            choice = sc.next();
         }
         System.out.println(gamesDesc[TOTAL] + gamesPlayed[TOTAL] + " games.");
         System.out.println(gamesDesc[WON] + gamesPlayed[WON] + " games.");
