@@ -4,7 +4,17 @@
  * Mystery Mansion
  *
  * MysteryMansionGame.java
- *
+ * 
+ * Contributors: Chengwei Yan 
+ *               Student ID: 694659
+ *               Email: cyan4@utas.edu.au
+ *               Github: https://github.com/ChenxiMiku
+ *               Wentao Su 
+ *               Student ID: 
+ *               Email: 
+ *               Github: https://github.com/AkiyaKiko
+ * Github repository: https://github.com/AkiyaKiko/AT3
+ * 
  *
  */
  
@@ -76,12 +86,14 @@ public class MysteryMansionGame {
 
     //
     public void play() {
-        bot.setTracing(false);
-        setDifficultyLevel();
-        explain();
+        bot.setTracing(false); // Turn off tracing
+        setDifficultyLevel(); // Set difficulty level
+        explain(); // Explain the game
+
         System.out.print("Would you like to play Mystery Mansion Game? ");
         String play = sc.next();
-        int arrows = numArrows;
+        int arrows = numArrows; // Store the number of arrows
+
         while(play.equalsIgnoreCase("y")){
             gameOver = false;
             numArrows = arrows;
@@ -93,6 +105,8 @@ public class MysteryMansionGame {
             System.out.print("Would you like to play Mystery Mansion Game? ");
             play = sc.next();
         }
+
+        // Print the number of games played
         System.out.println(gamesDesc[TOTAL] + gamesPlayed[TOTAL] + " games.");
         System.out.println(gamesDesc[WON] + gamesPlayed[WON] + " games.");
         System.out.println(gamesDesc[EATEN] + gamesPlayed[EATEN] + " games.");
@@ -121,7 +135,8 @@ public class MysteryMansionGame {
         char move = sc.next().charAt(0);
         move = Character.toLowerCase(move);
         response = -1;
-    
+        
+        // Implement user's move
         switch (move) {
             case 'w':
                 System.out.print("Which room would you like to walk into? ");
