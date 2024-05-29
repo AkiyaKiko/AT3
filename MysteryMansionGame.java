@@ -15,7 +15,7 @@
  *               Github: https://github.com/AkiyaKiko
  * Github repository: https://github.com/AkiyaKiko/AT3
  * 
- *
+ * Statement of Purpose: This program is designed to play the Mystery Mansion Game.
  */
  
  
