@@ -108,13 +108,10 @@ public class MysteryMansionGame {
         System.out.println("You have " + numArrows + " arrows remaining.");
     
         // Check if there's a smell of the ghost or a breeze from the pit
-        boolean ghost = bot.ghostNear();
-        boolean pit = bot.pitNear();
-    
-        if (ghost) {
+        if (bot.ghostNear()) {
             System.out.println("You can smell something horrible.");
         }
-        if (pit) {
+        if (bot.pitNear()) {
             System.out.println("You feel a cold wind.");
         }
 
@@ -129,22 +126,26 @@ public class MysteryMansionGame {
             case 'w':
                 System.out.print("Which room would you like to walk into? ");
                 // Implement walking into another room
-                int roomToWalk = sc.nextInt();
-                int walkResult = bot.tryWalk(roomToWalk);
-                if (walkResult == 0) {
-                    gameOver = false;
-                    response = 1;
-                } else if (walkResult == 1) {
-                    gamesPlayed[EATEN]++;
-                    gameOver = true;
-                    response = 2;
-                } else if (walkResult == 2) {
-                    gamesPlayed[FELL]++;
-                    gameOver = true;
-                    response = 3;
-                } else {
-                    gameOver = false;
-                    response = 0;
+                int walkResult = bot.tryWalk(sc.nextInt());
+                switch (walkResult) {
+                    case 0:
+                        gameOver = false;
+                        response = 1;
+                        break;
+                    case 1:
+                        gamesPlayed[EATEN]++;
+                        gameOver = true;
+                        response = 2;
+                        break;
+                    case 2:
+                        gamesPlayed[FELL]++;
+                        gameOver = true;
+                        response = 3;
+                        break;
+                    default:
+                        gameOver = false;
+                        response = 0;
+                        break;
                 }
                 break;
             case 's':
@@ -152,19 +153,22 @@ public class MysteryMansionGame {
                 // Implement shooting into another room
                 if (numArrows > 0) {
                     numArrows--;
-                    int roomToShoot = sc.nextInt();
-                    int shotResult = bot.tryShoot(roomToShoot);
-                    if (shotResult == 0) {
-                        gamesPlayed[WON]++;
-                        gameOver = true;
-                        response = 5;
-                    } else if (shotResult == 3) {
-                        response = 6;
+                    int shotResult = bot.tryShoot(sc.nextInt());
+                    switch (shotResult) {
+                        case 0:
+                            gamesPlayed[WON]++;
+                            gameOver = true;
+                            response = 5;        
+                            break;
+                        case 3:
+                            response = 6;
+                            break;
+                        default:
+                            response = 4;
+                            break;
                     }
-                    else {
-                        response = 4;
-                    }
-                } else {
+                }
+                else {
                     response = 7;
                 }
                 break;
