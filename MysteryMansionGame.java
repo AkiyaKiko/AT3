@@ -79,7 +79,7 @@ public class MysteryMansionGame {
         bot.setTracing(false);
         setDifficultyLevel();
         explain();
-        System.out.println("Would you like to play Mystery Mansion Game? ");
+        System.out.print("Would you like to play Mystery Mansion Game? ");
         String play = sc.next();
         int arrows = numArrows;
         while(play.equalsIgnoreCase("y")){
@@ -90,7 +90,7 @@ public class MysteryMansionGame {
             while (!gameOver) {
                 playOne();
             }
-            System.out.println("Would you like to play Mystery Mansion Game? ");
+            System.out.print("Would you like to play Mystery Mansion Game? ");
             play = sc.next();
         }
         System.out.println(gamesDesc[TOTAL] + gamesPlayed[TOTAL] + " games.");
@@ -120,13 +120,14 @@ public class MysteryMansionGame {
 
 
         // Ask for user's move
-        System.out.println("Please choose from (W)alk, (S)hoot, or (Q)uit: ");
+        System.out.print("Please choose from (W)alk, (S)hoot, or (Q)uit: ");
         char move = sc.next().charAt(0);
+        move = Character.toLowerCase(move);
         response = -1;
     
         switch (move) {
             case 'w':
-                System.out.println("Which room would you like to walk into?");
+                System.out.print("Which room would you like to walk into? ");
                 // Implement walking into another room
                 int roomToWalk = sc.nextInt();
                 int walkResult = bot.tryWalk(roomToWalk);
@@ -147,7 +148,7 @@ public class MysteryMansionGame {
                 }
                 break;
             case 's':
-                System.out.println("Which room would you like to shoot into?");
+                System.out.print("Which room would you like to shoot into? ");
                 // Implement shooting into another room
                 if (numArrows > 0) {
                     numArrows--;
