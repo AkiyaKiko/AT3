@@ -10,8 +10,8 @@
  *               Email: cyan4@utas.edu.au
  *               Github: https://github.com/ChenxiMiku
  *               Wentao Su 
- *               Student ID: 
- *               Email: 
+ *               Student ID: 694641
+ *               Email: wentaos@utas.edu.au
  *               Github: https://github.com/AkiyaKiko
  * Github repository: https://github.com/AkiyaKiko/AT3
  * 
@@ -56,6 +56,7 @@ public class MysteryMansionGame {
         bot = new MysteryMansionBot();
         sc = new Scanner(System.in);
 
+
         play();
     }
 
@@ -67,37 +68,39 @@ public class MysteryMansionGame {
         System.out.println("3. Hard");
         System.out.print("Enter your choice: ");
         difficultyLevel = sc.nextInt();
+        System.out.println();
 
         // Set the number of arrows based on the difficulty level
         switch (difficultyLevel) {
             case 1:
-                numArrows = MAXARROWS + 1; // Provide more arrows for easy mode
+                MAX_ARROWS = MAXARROWS + 1; // Provide more arrows for easy mode
                 break;
             case 2:
-                numArrows = MAXARROWS;
+                MAX_ARROWS = MAXARROWS;
                 break;
             case 3:
-                numArrows = MAXARROWS - 1; // Reduce arrows for hard mode
+                MAX_ARROWS = MAXARROWS - 1; // Reduce arrows for hard mode
                 break;
             default:
-                numArrows = MAXARROWS;
+                MAX_ARROWS = MAXARROWS;
         }
     
     }
 
     //
     public void play() {
+        tracing = false;
         bot.setTracing(false); // Turn off tracing
         setDifficultyLevel(); // Set difficulty level
         explain(); // Explain the game
 
         System.out.print("Would you like to play Mystery Mansion Game? ");
         String play = sc.next();
-        int arrows = numArrows; // Store the number of arrows
+        numArrows = MAX_ARROWS; // Store the number of arrows
 
         while(play.equalsIgnoreCase("y")){
             gameOver = false;
-            numArrows = arrows;
+            numArrows = MAX_ARROWS;
             gamesPlayed[TOTAL]++;
             bot.newGame();
             while (!gameOver) {
