@@ -61,6 +61,7 @@ public class MysteryMansionGame {
         while (true) {
             try {
                 difficultyLevel = sc.nextInt();
+                System.out.println("\n");
                 if (difficultyLevel >= 1 && difficultyLevel <= 3) {
                     break;
                 } else {
@@ -87,11 +88,12 @@ public class MysteryMansionGame {
 
     //
     public void play() {
-        bot.setTracing(true);
+        bot.setTracing(false);
         setDifficultyLevel();
         explain();
         System.out.print("Would you like to play Mystery Mansion Game? ");
         String choice = sc.next();
+        System.out.println("\n");
         while(choice.equalsIgnoreCase("y")){
             gamesPlayed[TOTAL]++;
             bot.newGame();
@@ -111,10 +113,9 @@ public class MysteryMansionGame {
     //
     public void playOne() {
         // Print current location and available information
-        System.out.println("Current Room: " + bot.getCurrent());
-        System.out.println(bot.nextRoom('l') + ',' + bot.nextRoom('r') + ',' + bot.nextRoom('a'));
-        System.out.println("Connecting Rooms: " + bot.pitNear());
-        System.out.println("Arrows: " + numArrows);
+        System.out.println("You are in Room #" + bot.getCurrent());
+        System.out.println("To your left is #"+bot.nextRoom('l') + ", " + "to your right is #"+bot.nextRoom('r') + ", " + " and ahead is #"+bot.nextRoom('a')+". ");
+        System.out.println("You have " + numArrows + " arrows remaining.");
     
         // Check if there's a smell of the ghost or a breeze from the pit
         boolean ghost = bot.ghostNear();
@@ -126,63 +127,68 @@ public class MysteryMansionGame {
 
 
         // Ask for user's move
-        System.out.println("What is your move?");
-        System.out.println("1. Walk into another room");
-        System.out.println("2. Shoot into another room");
-        System.out.println("3. Quit the game");
-        int move = sc.nextInt();
-    
-        switch (move) {
-            case 1:
-                System.out.println("Which room would you like to walk into?");
-                // Implement walking into another room
-                int roomToWalk = sc.nextInt();
-                int walkResult = bot.tryWalk(roomToWalk);
-                if (walkResult == 0) {
-                    gameOver = false;
-                    response = 1;
-                } else if (walkResult == 1) {
-                    gamesPlayed[EATEN]++;
-                    gameOver = true;
-                    response = 2;
-                } else if (walkResult == 2) {
-                    gamesPlayed[FELL]++;
-                    gameOver = true;
-                    response = 3;
-                } else {
-                    gameOver = false;
-                    response = 0;
-                }
-                break;
-            case 2:
-                System.out.println("Which room would you like to shoot into?");
-                // Implement shooting into another room
-                if (numArrows > 0) {
-                    numArrows--;
-                    int roomToShoot = sc.nextInt();
-                    int shotResult = bot.tryShoot(roomToShoot);
-                    if (shotResult == 0) {
-                        gamesPlayed[WON]++;
+        boolean notnextstep = true;
+        System.out.println("Please choose from (W)alk, (S)hoot, or (Q)uit: ");
+        String move = sc.next();
+        while(notnextstep){
+            switch (move.toUpperCase()) {
+                case "W":
+                    System.out.println("Which room would you like to walk into?");
+                    // Implement walking into another room
+                    int roomToWalk = sc.nextInt();
+                    int walkResult = bot.tryWalk(roomToWalk);
+                    if (walkResult == 0) {
+                        gameOver = false;
+                        response = 1;
+                    } else if (walkResult == 1) {
+                        gamesPlayed[EATEN]++;
                         gameOver = true;
-                        response = 5;
-                    } else if (shotResult == 3) {
-                        response = 6;
+                        response = 2;
+                    } else if (walkResult == 2) {
+                        gamesPlayed[FELL]++;
+                        gameOver = true;
+                        response = 3;
+                    } else {
+                        gameOver = false;
+                        response = 0;
                     }
-                    else {
-                        response = 4;
+                    notnextstep = false;
+                    break;
+                case "S":
+                    System.out.println("Which room would you like to shoot into?");
+                    // Implement shooting into another room
+                    if (numArrows > 0) {
+                        numArrows--;
+                        int roomToShoot = sc.nextInt();
+                        int shotResult = bot.tryShoot(roomToShoot);
+                        if (shotResult == 0) {
+                            gamesPlayed[WON]++;
+                            gameOver = true;
+                            response = 5;
+                        } else if (shotResult == 3) {
+                            response = 6;
+                        }
+                        else {
+                            response = 4;
+                        }
+                    } else {
+                        response = 7;
                     }
-                } else {
-                    response = 7;
-                }
-                break;
-            case 3:
-                // Quit the game
-                gamesPlayed[QUIT]++;
-                gameOver = true;
-                break;
-            default:
-                System.out.println("Invalid move. Please try again.");
+                    notnextstep = false;
+                    break;
+                case "Q":
+                    // Quit the game
+                    gamesPlayed[QUIT]++;
+                    notnextstep = false;
+                    gameOver = true;
+                    break;
+                default:
+                    System.out.println("Invalid move. Please try again.");
+                    System.out.println("Please choose from (W)alk, (S)hoot, or (Q)uit: ");
+                    move = sc.next();
+            }
         }
+
         System.out.println(RESPONSES[response]);
     }
 
