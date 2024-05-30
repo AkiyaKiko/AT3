@@ -13,7 +13,6 @@
  *               Student ID: 694641
  *               Email: wentaos@utas.edu.au
  *               Github: https://github.com/AkiyaKiko
- * Github repository: https://github.com/AkiyaKiko/AT3
  * 
  * Statement of Purpose: This program is designed to play the Mystery Mansion Game.
  */
@@ -62,10 +61,11 @@ public class MysteryMansionGame {
 
     // Set difficulty level
     public void setDifficultyLevel() {
-        System.out.println("Choose difficulty level:");
+        // Ask user to choose difficulty level
+        System.out.println("\nChoose difficulty level:");
         System.out.println("1. Easy");
         System.out.println("2. Medium");
-        System.out.println("3. Hard");
+        System.out.println("3. Hard\n");
         System.out.print("Enter your choice: ");
         difficultyLevel = sc.nextInt();
         System.out.println();
@@ -82,23 +82,28 @@ public class MysteryMansionGame {
                 MAX_ARROWS = MAXARROWS - 1; // Reduce arrows for hard mode
                 break;
             default:
-                MAX_ARROWS = MAXARROWS;
+                MAX_ARROWS = MAXARROWS; // Default to medium mode
         }
     
     }
 
     //
     public void play() {
+        // Turn off tracing
         tracing = false;
-        bot.setTracing(false); // Turn off tracing
+        bot.setTracing(false); 
+
         setDifficultyLevel(); // Set difficulty level
+
         explain(); // Explain the game
 
-        System.out.print("Would you like to play Mystery Mansion Game? ");
-        String play = sc.next();
-        numArrows = MAX_ARROWS; // Store the number of arrows
+        numArrows = MAX_ARROWS; // Store the number of arrows in current play
 
-        while(play.equalsIgnoreCase("y")){
+        // Ask user if they want to play the game
+        System.out.print("Would you like to play Mystery Mansion Game? ");
+        String play = sc.next(); // Get user's response
+        while(play.equalsIgnoreCase("y") || play.equalsIgnoreCase("yes")){
+            System.out.println();
             gameOver = false;
             numArrows = MAX_ARROWS;
             gamesPlayed[TOTAL]++;
@@ -111,11 +116,12 @@ public class MysteryMansionGame {
         }
 
         // Print the number of games played
+        System.out.println();
         System.out.println(gamesDesc[TOTAL] + gamesPlayed[TOTAL] + " games.");
         System.out.println(gamesDesc[WON] + gamesPlayed[WON] + " games.");
         System.out.println(gamesDesc[EATEN] + gamesPlayed[EATEN] + " games.");
         System.out.println(gamesDesc[FELL] + gamesPlayed[FELL] + " games.");
-        System.out.println(gamesDesc[QUIT] + gamesPlayed[QUIT] + " games.");
+        System.out.println(gamesDesc[QUIT] + gamesPlayed[QUIT] + " games.\n");
     }
 
     //
@@ -127,26 +133,22 @@ public class MysteryMansionGame {
     
         // Check if there's a smell of the ghost or a breeze from the pit
         if (bot.ghostNear()) {
-            System.out.println("You can smell something horrible.");
+            System.out.println("\nYou can smell something horrible.");
         }
         if (bot.pitNear()) {
-            System.out.println("You feel a cold wind.");
+            System.out.println("\nYou feel a cold wind.");
         }
 
-
         // Ask for user's move
-        System.out.print("Please choose from (W)alk, (S)hoot, or (Q)uit: ");
-        char move = sc.next().charAt(0);
-        move = Character.toLowerCase(move);
+        System.out.print("\nPlease choose from (W)alk, (S)hoot, or (Q)uit: ");
         response = -1;
         
         // Implement user's move
-        switch (move) {
-            case 'w':
+        switch (sc.next().toLowerCase()) {
+            case "w":
                 System.out.print("Which room would you like to walk into? ");
                 // Implement walking into another room
-                int walkResult = bot.tryWalk(sc.nextInt());
-                switch (walkResult) {
+                switch (bot.tryWalk(sc.nextInt())) {
                     case 0:
                         gameOver = false;
                         response = 1;
@@ -167,13 +169,12 @@ public class MysteryMansionGame {
                         break;
                 }
                 break;
-            case 's':
+            case "s":
                 System.out.print("Which room would you like to shoot into? ");
                 // Implement shooting into another room
                 if (numArrows > 0) {
                     numArrows--;
-                    int shotResult = bot.tryShoot(sc.nextInt());
-                    switch (shotResult) {
+                    switch (bot.tryWalk(sc.nextInt())) {
                         case 0:
                             gamesPlayed[WON]++;
                             gameOver = true;
@@ -191,16 +192,17 @@ public class MysteryMansionGame {
                     response = 7;
                 }
                 break;
-            case 'q':
+            case "q":
                 // Quit the game
                 gamesPlayed[QUIT]++;
                 gameOver = true;
                 break;
             default:
-                System.out.println("Invalid move. Please try again.");
+                System.out.println("Invalid action. Please try again.");
         }
         if(response >=0 && response <= 7)
             System.out.println(RESPONSES[response]);
+            System.out.println();
     }
 
     public void explain() {
