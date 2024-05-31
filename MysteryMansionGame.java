@@ -123,7 +123,7 @@ public class MysteryMansionGame {
         System.out.println(gamesDesc[WON] + gamesPlayed[WON] + " games.");
         System.out.println(gamesDesc[EATEN] + gamesPlayed[EATEN] + " games.");
         System.out.println(gamesDesc[FELL] + gamesPlayed[FELL] + " games.");
-        System.out.println(gamesDesc[QUIT] + gamesPlayed[QUIT] + " games.\n");
+        System.out.println(gamesDesc[QUIT] + gamesPlayed[QUIT] + " games.");
     }
 
     //
