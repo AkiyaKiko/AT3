@@ -104,6 +104,8 @@ public class MysteryMansionGame {
         String play = sc.next(); // Get user's response
         while(play.equalsIgnoreCase("y") || play.equalsIgnoreCase("yes")){
             System.out.println();
+
+            // Start a new game
             gameOver = false;
             numArrows = MAX_ARROWS;
             gamesPlayed[TOTAL]++;
@@ -139,9 +141,10 @@ public class MysteryMansionGame {
             System.out.println("\nYou feel a cold wind.");
         }
 
+        response = -1; // Reset response
+
         // Ask for user's move
         System.out.print("\nPlease choose from (W)alk, (S)hoot, or (Q)uit: ");
-        response = -1;
         
         // Implement user's move
         switch (sc.next().toLowerCase()) {
@@ -163,7 +166,7 @@ public class MysteryMansionGame {
                         gameOver = true;
                         response = 3;
                         break;
-                    default:
+                    case -1:
                         gameOver = false;
                         response = 0;
                         break;
@@ -187,9 +190,6 @@ public class MysteryMansionGame {
                             gameOver = false;
                             response = 4;
                             break;
-                        default: // No arrows
-                            response = 7;
-                            break;
                     }
                 }
                 else {
@@ -205,8 +205,9 @@ public class MysteryMansionGame {
             default:
                 System.out.println("Invalid action. Please try again.");
         }
+        // Print the result of the move
         if(response >=0 && response <= 7)
-            System.out.println("\n"+RESPONSES[response]);
+            System.out.println(RESPONSES[response]);
             System.out.println();
     }
 
