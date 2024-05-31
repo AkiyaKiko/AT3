@@ -1,5 +1,5 @@
 /**
- * KXO151 Assignment 3 (2024) Sample Solution
+ * KXO151 Assignment 3, 2024
  *
  * Mystery Mansion
  *
