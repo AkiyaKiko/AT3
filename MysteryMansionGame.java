@@ -204,9 +204,10 @@ public class MysteryMansionGame {
                 System.out.println("Invalid action. Please try again.");
         }
         // Print the result of the move
-        if(response >=0 && response <= 7)
+        if(response >=0 && response <= 7) {
             System.out.println(RESPONSES[response]);
             System.out.println();
+        }
     }
 
     public void explain() {
