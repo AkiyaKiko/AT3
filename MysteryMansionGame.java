@@ -170,25 +170,30 @@ public class MysteryMansionGame {
                 }
                 break;
             case "s":
-                System.out.print("Which room would you like to shoot into? ");
                 // Implement shooting into another room
                 if (numArrows > 0) {
+                    System.out.print("Which room would you like to shoot into? ");
                     numArrows--;
-                    switch (bot.tryWalk(sc.nextInt())) {
-                        case 0:
+                    switch (bot.tryShoot(sc.nextInt())) {
+                        case -1: // Shoot into a Wall
+                            response = 6;
+                            break;
+                        case 0: // Shoot into the ghost
                             gamesPlayed[WON]++;
                             gameOver = true;
                             response = 5;        
                             break;
-                        case 3:
-                            response = 6;
-                            break;
-                        default:
+                        case 3: // Shoot missing
+                            gameOver = false;
                             response = 4;
+                            break;
+                        default: // No arrows
+                            response = 7;
                             break;
                     }
                 }
                 else {
+                    // No arrows
                     response = 7;
                 }
                 break;
@@ -201,7 +206,7 @@ public class MysteryMansionGame {
                 System.out.println("Invalid action. Please try again.");
         }
         if(response >=0 && response <= 7)
-            System.out.println(RESPONSES[response]);
+            System.out.println("\n"+RESPONSES[response]);
             System.out.println();
     }
 
